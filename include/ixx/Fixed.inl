@@ -159,13 +159,13 @@ namespace ixx
 	{
 		typedef typename Atom::twice_t twice_t;
 
-		auto ldiv = atoms() / one();
-		auto rdiv = fixed.atoms() / one();
+		auto ldiv = atoms() / one().atoms();
+		auto rdiv = fixed.atoms() / one().atoms();
 
-		return one() * ldiv.quotient * rdiv.quotient
+		return one().atoms() * ldiv.quotient * rdiv.quotient
 			+ (ldiv.quotient * rdiv.remainder)
 			+ (ldiv.remainder * rdiv.quotient)
-			+ ((ldiv.remainder * rdiv.remainder) / one()).quotient;
+			+ ((ldiv.remainder * rdiv.remainder) / one().atoms()).quotient;
 	}
 
 	template<class Atom, std::size_t kBase, std::size_t kDigits>

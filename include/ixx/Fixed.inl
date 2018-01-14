@@ -154,6 +154,63 @@ namespace ixx
 	}
 
 	template<class Atom, std::size_t kBase, std::size_t kDigits>
+	Fixed<Atom, kBase, kDigits>::operator*(
+		Fixed<Atom, kBase, kDigits> const& fixed) const
+	{
+		typedef typename Atom::twice_t twice_t;
+
+		auto ldiv = atoms() / one();
+		auto rdiv = fixed.atoms() / one();
+
+		return one() * ldiv.quotient * rdiv.quotient
+			+ (ldiv.quotient * rdiv.remainder)
+			+ (ldiv.remainder * rdiv.quotient)
+			+ ((ldiv.remainder * rdiv.remainder) / one()).quotient;
+	}
+
+	template<class Atom, std::size_t kBase, std::size_t kDigits>
+	bool Fixed<Atom, kBase, kDigits>::operator<(
+		Fixed<Atom, kBase, kDigits> const& rhs) const
+	{
+		return atoms() < rhs.atoms();
+	}
+
+	template<class Atom, std::size_t kBase, std::size_t kDigits>
+	bool Fixed<Atom, kBase, kDigits>::operator<=(
+		Fixed<Atom, kBase, kDigits> const& rhs) const
+	{
+		return atoms() <= rhs.atoms();
+	}
+
+	template<class Atom, std::size_t kBase, std::size_t kDigits>
+	bool Fixed<Atom, kBase, kDigits>::operator!=(
+		Fixed<Atom, kBase, kDigits> const& rhs) const
+	{
+		return atoms() != rhs.atoms();
+	}
+
+	template<class Atom, std::size_t kBase, std::size_t kDigits>
+	bool Fixed<Atom, kBase, kDigits>::operator==(
+		Fixed<Atom, kBase, kDigits> const& rhs) const
+	{
+		return atoms() == rhs.atoms();
+	}
+
+	template<class Atom, std::size_t kBase, std::size_t kDigits>
+	bool Fixed<Atom, kBase, kDigits>::operator>=(
+		Fixed<Atom, kBase, kDigits> const& rhs) const
+	{
+		return atoms() >= rhs.atoms();
+	}
+
+	template<class Atom, std::size_t kBase, std::size_t kDigits>
+	bool Fixed<Atom, kBase, kDigits>::operator>(
+		Fixed<Atom, kBase, kDigits> const& rhs) const
+	{
+		return atoms() > rhs.atoms();
+	}
+
+	template<class Atom, std::size_t kBase, std::size_t kDigits>
 	Atom const& Fixed<Atom, kBase, kDigits>::atoms() const noexcept
 	{
 		return m_atoms;

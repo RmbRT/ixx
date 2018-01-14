@@ -64,6 +64,19 @@ namespace ixx
 		Fixed<Atom, kBase, kDigits> operator*(
 			Fixed<Atom, kBase, kDigits> const& fixed) const;
 
+		inline bool operator<(
+			Fixed<Atom, kBase, kDigits> const& rhs) const;
+		inline bool operator<=(
+			Fixed<Atom, kBase, kDigits> const& rhs) const;
+		inline bool operator!=(
+			Fixed<Atom, kBase, kDigits> const& rhs) const;
+		inline bool operator==(
+			Fixed<Atom, kBase, kDigits> const& rhs) const;
+		inline bool operator>=(
+			Fixed<Atom, kBase, kDigits> const& rhs) const;
+		inline bool operator>(
+			Fixed<Atom, kBase, kDigits> const& rhs) const;
+
 		/** Converts the number into a string. */
 		std::string to_string(
 			std::size_t max_digits = (kBase % 10)

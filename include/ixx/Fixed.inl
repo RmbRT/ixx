@@ -154,7 +154,7 @@ namespace ixx
 	}
 
 	template<class Atom, std::size_t kBase, std::size_t kDigits>
-	Fixed<Atom, kBase, kDigits>::operator*(
+	Fixed<Atom, kBase, kDigits> Fixed<Atom, kBase, kDigits>::operator*(
 		Fixed<Atom, kBase, kDigits> const& fixed) const
 	{
 		typedef typename Atom::twice_t twice_t;

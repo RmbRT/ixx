@@ -97,6 +97,9 @@ namespace ixx
 		bool operator==(
 			UInt<Digit, kDigits> const& other) const noexcept;
 
+		operator bool() const noexcept;
+		bool operator!() const noexcept;
+
 		signed compare(
 			UInt<Digit, kDigits> const& other) const noexcept;
 

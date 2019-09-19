@@ -59,14 +59,14 @@ namespace ixx
 				m_atoms *= factor;
 
 				std::size_t j;
-				for(j = 1; string[i+j] && factor >= kBase; j++)
+				for(j = 1; string[i+j] && factor >= Atom{kBase}; j++)
 				{
 					if(string[i+j] < '0' || string[i+j] > '9')
 						throw std::domain_error("number string expected.");
 					factor = (factor / ten).quotient;
 					unsigned char digit = string[i+j]-'0';
 					if(digit)
-						m_atoms += factor * digit;
+						m_atoms += factor * Atom{digit};
 				}
 
 				if(string[i+j])
@@ -91,7 +91,7 @@ namespace ixx
 		static Atom const ten{10};
 		auto div = m_atoms / one().m_atoms;
 		std::string result = div.quotient.to_string();
-		if(div.remainder != 0)
+		if(div.remainder)
 		{
 			result.push_back('.');
 
@@ -101,7 +101,7 @@ namespace ixx
 				div = div.remainder / one().m_atoms;
 				result.push_back('0' + div.quotient.template to<unsigned char>());
 
-				if(div.remainder == 0)
+				if(!div.remainder)
 					break;
 			}
 		}

@@ -2,6 +2,12 @@
 
 namespace ixx
 {
+	namespace detail
+	{
+		template<class Digit, std::size_t kDigits>
+		static UInt<Digit, kDigits> const kOne = 1;
+	}
+
 	template<class Digit, std::size_t kDigits>
 	UInt<Digit, kDigits>::UInt() noexcept
 	{
@@ -534,6 +540,24 @@ namespace ixx
 	}
 
 	template<class Digit, std::size_t kDigits>
+	UInt<Digit, kDigits>::operator bool() const noexcept
+	{
+		for(std::size_t i = kDigits; i--;)
+			if(m_digits[i])
+				return true;
+		return false;
+	}
+
+	template<class Digit, std::size_t kDigits>
+	bool UInt<Digit, kDigits>::operator!() const noexcept
+	{
+		for(std::size_t i = kDigits; i--;)
+			if(m_digits[i])
+				return false;
+		return true;
+	}
+
+	template<class Digit, std::size_t kDigits>
 	signed UInt<Digit, kDigits>::compare(
 		UInt<Digit, kDigits> const& other) const noexcept
 	{
@@ -553,7 +577,7 @@ namespace ixx
 		UInt<Digit, kDigits> const& base,
 		std::size_t exponent)
 	{
-		if(base <= 1 || exponent == 1)
+		if(base <= detail::kOne<Digit, kDigits> || exponent == 1)
 			return base;
 		if(!exponent)
 			return Digit(1);
@@ -561,7 +585,7 @@ namespace ixx
 		UInt<Digit, kDigits> factor = base;
 		UInt<Digit, kDigits> accum = (exponent & 1)
 			? base
-			: 1;
+			: detail::kOne<Digit, kDigits>;
 		exponent &= ~std::size_t(1);
 		for(std::size_t i = 1; i < 8*sizeof(exponent) && exponent; i++)
 		{
@@ -622,9 +646,9 @@ namespace ixx
 		do {
 			result.insert(result.begin(), '0' + div.remainder.template to<unsigned char>());
 			div = div.quotient / ten;
-		} while(div.quotient != 0);
+		} while(div.quotient);
 
-		if(div.remainder != 0)
+		if(div.remainder)
 			result.insert(result.begin(), '0' + div.remainder.template to<unsigned char>());
 
 		return std::move(result);

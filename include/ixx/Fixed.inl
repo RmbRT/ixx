@@ -148,7 +148,7 @@ namespace ixx
 
 		static twice_t const& twice_one = Fixed<twice_t, kBase, kDigits>::one().atoms();
 
-		auto div = (twice_one*m_atoms) / fixed.atoms();
+		auto div = (twice_one*twice_t{m_atoms}) / fixed.atoms();
 
 		return Atom{div.quotient};
 	}
@@ -162,10 +162,11 @@ namespace ixx
 		auto ldiv = atoms() / one().atoms();
 		auto rdiv = fixed.atoms() / one().atoms();
 
-		return one().atoms() * ldiv.quotient * rdiv.quotient
+		// atoms() - ldiv.remainder = one().atoms() * ldiv.quotient
+		return ((atoms() - ldiv.remainder) * rdiv.quotient)
 			+ (ldiv.quotient * rdiv.remainder)
 			+ (ldiv.remainder * rdiv.quotient)
-			+ ((ldiv.remainder * rdiv.remainder) / one().atoms()).quotient;
+			+ Atom{((twice_t(ldiv.remainder) * rdiv.remainder) / one().atoms()).quotient};
 	}
 
 	template<class Atom, std::size_t kBase, std::size_t kDigits>
